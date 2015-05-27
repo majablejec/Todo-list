@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>SmartNinja project</title>
+
+  <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+
+  <script src="../bower_components/angular/angular.js"></script>
+
+  <script src="js/all.js"></script>
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+	<style>
+		.line-through {
+		text-decoration: line-through;
+		}
+	</style>
+</head>
+
+<body ng-app="Frello2" ng-controller="OutsideCtrl">
+
+	<nav class="navbar navbar-inverse" ng-controller="NavCtrl">
+		<div class="container">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">Frello 2 | Todo List</a>
+			</div>
+			<p class="navbar-text">
+				<span class="label label-success" ng-if="taskAdded">Task added</span>
+				<span class="label label-info" ng-if="taskEdited">Task edited</span>
+				<span class="label label-warning" ng-if="taskRemoved">Task removed</span>
+			</p>
+			<form class="navbar-form navbar-right" role="search">
+				<div class="form-group">
+					<input type="text" class="form-control" ng-model="newTask" placeholder="I need to ...">
+				</div>
+				<button type="submit" class="btn btn-primary" ng-click="addTask(newTask)">Add Task</button>
+			</form>	
+			
+		</div>
+	</nav>
+
+	<div class="container" ng-controller="ContentCtrl">
+		
+		<div class="row">
+			<div class="col-xs-12">
+				<form class="form-inline">
+					<div class="form-group">
+						<input type="text" class="form-control" ng-model="newTask" placeholder="I need to ...">
+					</div>
+					<button type="submit" class="btn btn-primary" ng-click="addTask(newTask)">Add task</button>
+				</form>
+				<br />
+				<br />
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-xs-12">
+				<div ng-repeat="task in tasks">
+
+					<!-- Form Non Edit Mode -->
+					<form class="form-inline" ng-hide="displayEditMode">
+						<div class="form-group">
+							<input type="checkbox" ng-model="taskCompleted">
+						</div>
+						<div class="form-group" ng-class="{ 'line-through': taskCompleted }">
+							<div>{{ task }}</div>
+						</div>
+						<button type="button" class="btn btn-default btn-s" ng-click="displayEditMode=!displayEditMode" ng-hide="taskCompleted">
+							<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit
+						</button>
+						<button type="button" class="btn btn-default btn-s" ng-click="removeTask($index)">
+							<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Remove
+						</button>
+					</form>
+
+					<!-- Form Edit Mode -->
+					<form class="form-inline" ng-show="displayEditMode">
+						<div class="form-group">
+							<input type="text" class="form-control" ng-model="task">
+						</div>
+						<button type="button" class="btn btn-default btn-s" ng-click="displayEditMode=!displayEditMode; editTask($index, task)">
+							<span class="glyphicon glyphicon-save" aria-hidden="true"></span> Save task
+						</button>
+					</form>
+
+				</div>
+			</div>
+		</div>	
+	</div>
+	</body>
+</html>
+
